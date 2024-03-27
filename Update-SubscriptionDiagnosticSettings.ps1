@@ -200,7 +200,7 @@ try {
         continue
         }
     }
-
+}
     catch {
         Write-Error -Message "There was an error updating diagnostic settings. Please resolve the problem and retry."
         Write-Error -Exception $PSItem.Exception
@@ -208,4 +208,3 @@ try {
     finally {
         Set-AzContext -Context $DestinationSubscriptionContext
     }
-}
