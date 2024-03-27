@@ -198,13 +198,14 @@ try {
         Write-Error -Message "Error processing subscription $($subscription.Name): $($_.Exception.Message)"
         # Continue to the next subscription even if an error occurs
         continue
+        }
     }
+
+    catch {
+        Write-Error -Message "There was an error updating diagnostic settings. Please resolve the problem and retry."
+        Write-Error -Exception $PSItem.Exception
     }
-}
-catch {
-    Write-Error -Message "There was an error updating diagnostic settings. Please resolve the problem and retry."
-    Write-Error -Exception $PSItem.Exception
-}
-finally {
-    Set-AzContext -Context $DestinationSubscriptionContext
+    finally {
+        Set-AzContext -Context $DestinationSubscriptionContext
+    }
 }
