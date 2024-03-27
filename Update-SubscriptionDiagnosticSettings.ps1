@@ -186,12 +186,18 @@ try {
     Write-Host "Found subscriptions for tenant: '${subscriptions}'."
 
     foreach ($subscription in $subscriptions) {
+    try {
         if ($SubscriptionsThatMustHaveDiagnosticSettings -contains $subscription.Id) {
             Set-DiagnosticSetting -SubscriptionIdToEnableDiagSetting $subscription.Id
         }
         else {
             Remove-DiagnosticSetting -SubscriptionIdToRemoveDiagSetting $subscription.Id
         }
+    }
+    catch {
+        Write-Error -Message "Error processing subscription $($subscription.Name): $($_.Exception.Message)"
+        # Continue to the next subscription even if an error occurs
+        continue
     }
 }
 catch {
